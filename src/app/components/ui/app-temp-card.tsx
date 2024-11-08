@@ -1,5 +1,9 @@
+"use client"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { HomeTempChart } from "./app-temp-chart";
+import HomeTempChart from "./app-temp-chart";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export function HomeTempCard(){
     return(
@@ -8,7 +12,11 @@ export function HomeTempCard(){
                 <CardTitle>Temperature</CardTitle>
                 <CardDescription>Building: Bergeron, PetrieA, PetrieB</CardDescription>
             </CardHeader>
-            <CardContent><HomeTempChart/></CardContent>
+            <CardContent>
+                <QueryClientProvider client={queryClient}>
+                    <HomeTempChart/>
+                </QueryClientProvider>
+            </CardContent>
         </Card>
     );
 }

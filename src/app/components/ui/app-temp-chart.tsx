@@ -1,6 +1,6 @@
-"use client"
 
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
+
+import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
 import {
   ChartConfig,
@@ -8,21 +8,15 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { useSuspenseQuery } from "@tanstack/react-query"
-import { temperatureOptions } from "@/app/data-fetching/data"
+import { QueryClient, QueryClientProvider, useQuery, useQueryClient } from "@tanstack/react-query"
+import { tempOptions } from "@/app/lib/data"
+import { TempData } from "@/app/lib/definitions"
+import { useEffect, useState } from "react"
+import { timeStamp } from "console"
 
 export const description = "Temperature Chart"
 
-
-
-const chartData = [
-  { date: "January", bergeron: 186 },
-  { date: "February", bergeron: 305 },
-  { date: "March", bergeron: 237 },
-  { date: "April", bergeron: 73 },
-  { date: "May", bergeron: 209 },
-  { date: "June", bergeron: 214 },
-]
+/*
 
 const chartConfig = {
   bergeron: {
@@ -51,7 +45,7 @@ export function HomeTempChart() {
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 5)}
+              tickFormatter={(value) => value.slice(0, 6)}
             />
             <YAxis/>
             <ChartTooltip
@@ -69,4 +63,45 @@ export function HomeTempChart() {
           </LineChart>
         </ChartContainer>
   )
+}
+*/
+
+export default function HomeTempChart(){
+
+ const {data, isLoading, error} = useQuery(tempOptions)
+ const [chartData, setChartData] = useState<TempData[]>([]);
+ useEffect(() => {
+  if (data) {
+    setChartData((prevData) => [
+      ...prevData,
+      {
+        temp: data.temp,
+        timestamp: new Date().toLocaleTimeString(), // Call the function to get the timestamp
+      },
+    ]);
+  }
+}, [data].slice(-10));
+
+if(isLoading) return <h1>loading...</h1>
+if (error instanceof Error) return <h1>Error: {error.message}</h1>;
+console.log('Chart Data:', chartData);
+  return(
+    <ResponsiveContainer width="100%" height={400}>
+      <LineChart
+        data={chartData}
+        margin={{
+          left: 12,
+          right: 12,
+        }}
+      >
+      <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="timestamp" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Line type="monotone" dataKey="temp" stroke="red" dot={false} />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+ 
 }
