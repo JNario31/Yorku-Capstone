@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import SideNav from "./components/ui/sidebar";
-import Providers from "./data-fetching/providers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -37,7 +36,7 @@ export default function RootLayout({
         </div>
 
         <div className="flex-grow p-6 md:overflow-y-auto md:p-12">
-         <Providers>{children}</Providers> 
+         {children} 
         </div>
 
       </div>
