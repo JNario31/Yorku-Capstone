@@ -9,7 +9,7 @@ app=Flask(__name__)
 CORS(app)
 
 def generate_data():
-    temperature = round(random.uniform(23, 25), 2)
+    temperature = round(random.uniform(19, 22), 2)
     return {"temp": temperature}
 
 @app.route("/api/data", methods=["GET"])
