@@ -1,4 +1,9 @@
 export type TempData ={
-    temp: number;
+    data: number;
+    timestamp: string;
+}
+
+export type HumidData = {
+    data: number;
     timestamp: string;
 }

@@ -1,20 +1,21 @@
 "use client"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import HomeTempLineChart from "./app-temp-linechart";
+import HomeHumidLineChartFiltered from "./ui/app-humidity-filtered-chart";
+
 
 const queryClient = new QueryClient();
 
-export function HomeTempCard(){
+export function HomeHumidFilteredCard(){
     return(
         <Card>
             <CardHeader>
-                <CardTitle>Temperature</CardTitle>
+                <CardTitle>Humidity</CardTitle>
                 <CardDescription>Building: Bergeron, PetrieA, PetrieB</CardDescription>
             </CardHeader>
             <CardContent>
                 <QueryClientProvider client={queryClient}>
-                    <HomeTempLineChart/>
+                    <HomeHumidLineChartFiltered/>
                 </QueryClientProvider>
             </CardContent>
         </Card>

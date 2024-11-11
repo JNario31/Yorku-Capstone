@@ -9,11 +9,11 @@ import { useQuery } from "@tanstack/react-query"
 import { tempOptions } from "@/app/lib/data"
 import { TempData } from "@/app/lib/definitions"
 import { useEffect, useRef, useState } from "react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { filterData } from "@/app/lib/filterData"
 import { formatXAxisTick } from "@/app/lib/formatXAxisTick"
 import { TimeRangeSelect } from "./TimeRangeSelect"
 import { formatXAxisTickInterval } from "@/app/lib/formatXAxisTickInterval"
+import DefaultLineChart from "@/app/lib/lineChart"
 
 export default function HomeTempLineChartFiltered(){
 
@@ -28,7 +28,7 @@ export default function HomeTempLineChartFiltered(){
    useEffect(()=>{
      if(data) {
        const newData: TempData = {
-         temp: data.temp,
+         data: data.temp,
          timestamp: new Date().toLocaleString(),
        };
    
@@ -57,42 +57,9 @@ export default function HomeTempLineChartFiltered(){
   } satisfies ChartConfig
    
      return (   
-      <div>
-      {/*Table selection for last 7 days, 24 hours, and Last Hour*/}
+      <>
       <TimeRangeSelect timeRange={timeRange} setTimeRange={setTimeRange}/>
-      <ChartContainer config={chartConfig}>
-       <LineChart
-         accessibilityLayer
-         data={filteredData}
-         margin={{
-           left: 0,
-           right: 50,
-         }}
-       >
-         <CartesianGrid vertical={false} />
-          {/*Format X axis based on what time range is selected, see formatXAxisTick.ts*/}
-         <XAxis
-           dataKey="timestamp"
-           tickLine={true}
-           axisLine={true}
-           tickMargin={8}
-           tickFormatter={(value)=>formatXAxisTick(value, timeRange)}
-           interval={(formatXAxisTickInterval(timeRange))}
-         />
-         <YAxis/>
-         <Tooltip/>
-         <ReferenceLine y={21} stroke="pink" strokeDasharray={"3 3"}/>
-         <Line
-           dataKey="temp"
-           type="natural"
-           stroke="var(--color-bergeron)"
-           strokeWidth={2}
-           dot={false}
-           isAnimationActive={false}
-         />
-       </LineChart>
-      </ChartContainer>
-      </div>
-         
+      <DefaultLineChart chartConfig={chartConfig} filteredData={filteredData} timeRange={timeRange}/>
+      </>
      )
    }

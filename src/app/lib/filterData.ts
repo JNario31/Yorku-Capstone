@@ -1,10 +1,10 @@
-import { TempData } from "./definitions";
+import { HumidData, TempData } from "./definitions";
 
-export function filterData(chartData: TempData[], timeRange: string): TempData[]{
+export function filterData(chartData: TempData[] | HumidData[], timeRange: string){
     const referenceDate = new Date();
-    let startDate: number | Date;
+    let startDate: Date;
 
-    const aggregatedData: {[key:string]: TempData[]}={};
+    const aggregatedData: {[key:string]: TempData[] | HumidData[]}={};
 
     chartData.forEach((item)=>{
         const date = new Date(item.timestamp);
@@ -50,26 +50,4 @@ export function filterData(chartData: TempData[], timeRange: string): TempData[]
     const date = new Date(item.timestamp);
     return date >= startDate; // Filter by the start date/time
     });
-
-    /*
-
-    if (timeRange === "7d") {
-      startDate = new Date(referenceDate);
-      startDate.setDate(startDate.getDate() - 7);
-    } else if (timeRange === "24h") {
-      startDate = new Date(referenceDate);
-      startDate.setHours(startDate.getHours() - 24);
-    } else if (timeRange === "1h") {
-      startDate = new Date(referenceDate);
-      startDate.setHours(startDate.getHours() - 1);
-    } else {
-      // Default to showing all data if no valid timeRange is selected
-      return chartData;
-    }
-
-    return chartData.filter((item) => {
-        const date = new Date(item.timestamp);
-        return date >= startDate;
-    });
-    */
 }
